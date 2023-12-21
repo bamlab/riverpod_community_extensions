@@ -2,7 +2,6 @@ name: riverpods_community_extensions
 description: Community extensions for Riverpods
 version: 0.1.0+1
 
-
 environment:
   sdk: ">=3.0.0 <4.0.0"
 
@@ -11,4 +10,4 @@ dev_dependencies:
   test: ^1.19.2
   very_good_analysis: ^5.1.0
 dependencies:
-  riverpod: ^2.4.6
+  riverpod: ^2.0.0
