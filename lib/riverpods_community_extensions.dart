@@ -1,4 +1,4 @@
 /// Community extensions for Riverpods
 library riverpods_community_extensions;
 
-export 'src/riverpods_community_extensions.dart';
+export 'src/cache_for_extension.dart';
