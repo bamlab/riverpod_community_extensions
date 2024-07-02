@@ -10,7 +10,8 @@ import 'package:riverpod/riverpod.dart';
 ///
 /// See [cacheDataFor]
 extension CacheDataForExtension<T> on AutoDisposeFutureProviderRef<T> {
-  /// When invoked keeps your provider alive for [duration].
+  /// When invoked, keeps the data state of your provider alive for [duration].
+  /// Doesn't impact the error and loading states of the provider.
   ///
   /// Example usages:
   /// without codegen:
