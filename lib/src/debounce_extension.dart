@@ -14,13 +14,25 @@ extension DebounceExtension<T> on AutoDisposeFutureProviderRef<T> {
   /// until a user has stopped interacting with a UI element to reduce redundant
   /// calls.
   ///
-  /// Example usage:
+  /// Example usages:
+  ///
+  /// without codegen:
   /// ```dart
   /// final myFutureProvider = FutureProvider<int>((ref) async {
   ///   await ref.debounce(const Duration(milliseconds: 300));
   ///   // Perform expensive operation after a debounce of 300 milliseconds.
   ///   return fetchData();
   /// });
+  /// ```
+  ///
+  /// with codegen:
+  /// ```dart
+  /// @riverpod
+  /// Future<int> myFuture(MyFutureRef ref) async {
+  ///   await ref.debounce(const Duration(milliseconds: 300));
+  ///   // Perform expensive operation after a debounce of 300 milliseconds.
+  ///   return fetchData();
+  /// }
   /// ```
   Future<void> debounce(Duration duration) {
     final completer = Completer<void>();
