@@ -25,18 +25,30 @@ void main() {
     });
 
     test(
-        'debounce stops the execution '
+        'debounce cancels the first execution '
         'if it is relaunched before the debounce duration', () async {
+      final lastTriggeredValueProvider = StateProvider((ref) => 1);
+      final executionValuesProvider = StateProvider((ref) => 0);
+
+      // Define a FutureProvider that uses debounce.
+      final myFutureProvider = FutureProvider.autoDispose<int>((ref) async {
+        await ref.debounce(const Duration(milliseconds: 300));
+        ref.read(executionValuesProvider.notifier).state +=
+            ref.read(lastTriggeredValueProvider);
+        return 42; // Some dummy result.
+      });
+
       final container = ProviderContainer();
-      expect(container.read(executionCounterProvider), 0);
+      expect(container.read(executionValuesProvider), 0);
       container.listen(myFutureProvider, (_, __) {});
       // relaunch before the debounce duration.
       await Future<void>.delayed(const Duration(milliseconds: 100));
+      container.read(lastTriggeredValueProvider.notifier).state = 10;
       container.listen(myFutureProvider, (_, __) {});
 
       // Wait for 700 milliseconds, longer than the debounce duration.
       await Future<void>.delayed(const Duration(milliseconds: 700));
-      expect(container.read(executionCounterProvider), 1);
+      expect(container.read(executionValuesProvider), 10);
     });
 
     test('debounce handles dispose error', () async {
