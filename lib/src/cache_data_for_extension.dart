@@ -11,6 +11,26 @@ import 'package:riverpod/riverpod.dart';
 /// See [cacheDataFor]
 extension CacheDataForExtension<T> on AutoDisposeFutureProviderRef<T> {
   /// When invoked keeps your provider alive for [duration].
+  ///
+  /// Example usages:
+  /// without codegen:
+  /// ```dart
+  /// final myValueProvider = FutureProvider.autoDispose((ref) {
+  ///   ref.cacheDataFor(const Duration(minutes: 5));
+  ///
+  ///   return Future.value('myValue');
+  /// });
+  ///```
+  ///
+  /// with codegen:
+  ///```dart
+  /// @riverpod
+  /// Future<String> myValue (MyValueRef ref) async {
+  ///   ref.cacheDataFor(const Duration(minutes: 5));
+  ///
+  ///   return Future.value('myValue');
+  /// });
+  ///```
   void cacheDataFor(Duration duration) {
     var link = keepAlive();
     var timer = Timer(duration, link.close);
