@@ -28,22 +28,36 @@ Out of the box, on each pull request and push, the CI `formats`, `lints`, and `t
 
 ## Running Tests 🧪
 
-To run all unit tests:
+This project uses [melos][melos_link] for convenience scripts such as running tests and coverage. All of these scripts can be run from any directory in the project, and are defined in the root `melos.yaml` file.
+
+To activate melos, run the following command:
 
 ```sh
-dart pub global activate coverage 1.2.0
-dart test --coverage=coverage
-dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info
+dart pub global activate melos
 ```
 
-To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov).
+After that, to run all unit tests:
 
 ```sh
-# Generate Coverage Report
-genhtml coverage/lcov.info -o coverage/
+melos test
+```
 
-# Open Coverage Report
-open coverage/index.html
+To run all tests and generate coverage report:
+
+```sh
+melos test:cov
+```
+
+To view the generated coverage report using [lcov][lcov_link] in your browser, run:
+
+```sh
+melos open:cov
+```
+
+If you want to reproduce the CI analyze job locally, you can run:
+
+```sh
+melos analyze
 ```
 
 [dart_install_link]: https://dart.dev/get-dart
@@ -60,3 +74,5 @@ open coverage/index.html
 [very_good_ventures_link_light]: https://verygood.ventures#gh-light-mode-only
 [very_good_ventures_link_dark]: https://verygood.ventures#gh-dark-mode-only
 [very_good_workflows_link]: https://github.com/VeryGoodOpenSource/very_good_workflows
+[lcov_link]: https://github.com/linux-test-project/lcov
+[melos_link]: https://melos.invertase.dev/
