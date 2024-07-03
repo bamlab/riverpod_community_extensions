@@ -1,0 +1,34 @@
+name: Pull request checks
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_call:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - id: dotenv
+        uses: falti/dotenv-action@v1.0.4
+        with:
+          path: .github/workflows/.env
+
+      - name: 💙 Install Flutter
+        uses: subosito/flutter-action@v2.9.1
+        with:
+          flutter-version: ${{ steps.dotenv.outputs.flutter_version }}
+          channel: "stable"
+          cache: true
+          cache-key: ${{ runner.os }}-flutter-${{ steps.dotenv.outputs.flutter_version }}
+          cache-path: ${{ runner.tool_cache }}/flutter-${{ steps.dotenv.outputs.flutter_version }}
+
+      - name: 🧐 Analyze
+        run: | 
+          dart analyze . && \ 
+          dart format --set-exit-if-changed lib test
+          
