@@ -1,1 +1,4 @@
 .dart_tool
+*coverage/
+melos_riverpod_community_extensions.iml
+*build/
