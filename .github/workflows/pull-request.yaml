@@ -27,10 +27,11 @@ jobs:
           cache-key: ${{ runner.os }}-flutter-${{ steps.dotenv.outputs.flutter_version }}
           cache-path: ${{ runner.tool_cache }}/flutter-${{ steps.dotenv.outputs.flutter_version }}
 
+      - name: 🟠 Install Dependencies
+        uses: bluefireteam/melos-action@v1
+
       - name: 🧐 Analyze
-        run: | 
-          dart analyze . && \ 
-          dart format --set-exit-if-changed lib test
+        run: melos analyze
 
   test-extensions:
     needs: analyze
