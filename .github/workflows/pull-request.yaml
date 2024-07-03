@@ -31,4 +31,35 @@ jobs:
         run: | 
           dart analyze . && \ 
           dart format --set-exit-if-changed lib test
-          
+
+  test-extensions:
+    needs: analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v4
+
+      - id: dotenv
+        uses: falti/dotenv-action@v1.0.4
+        with:
+          path: .github/workflows/.env
+
+      - name: 💙 Install Flutter
+        uses: subosito/flutter-action@v2.9.1
+        with:
+          flutter-version: ${{ steps.dotenv.outputs.flutter_version }}
+          channel: "stable"
+          cache: true
+          cache-key: ${{ runner.os }}-flutter-${{ steps.dotenv.outputs.flutter_version }}
+          cache-path: ${{ runner.tool_cache }}/flutter-${{ steps.dotenv.outputs.flutter_version }}
+      
+      - name: 🟠 Install Dependencies
+        run: flutter pub get
+
+      - name: ✅ Run tests
+        run: flutter test --coverage --no-pub --test-randomize-ordering-seed random
+      
+      - name: 💯 Check coverage
+        uses: VeryGoodOpenSource/very_good_coverage@v3
