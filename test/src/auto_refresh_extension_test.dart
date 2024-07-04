@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpods_community_extensions/src/auto_refresh_extension.dart';
@@ -70,6 +71,63 @@ void main() {
       );
       // The value should be refreshed after the time interval
       expect(numberOfFetchDataCalls, 3);
+    });
+  });
+
+  group('refreshWhenReturningToForeground', () {
+    var numberOfFetchDataCalls = 0;
+
+    int fetchData() {
+      numberOfFetchDataCalls++;
+      return 42;
+    }
+
+    final myProvider = Provider.autoDispose<int>((ref) {
+      ref.refreshWhenReturningToForeground();
+      return fetchData();
+    });
+
+    late ProviderContainer container;
+
+    setUp(() {
+      numberOfFetchDataCalls = 0;
+      container = ProviderContainer()..listen(myProvider, (_, __) {});
+    });
+
+    tearDown(() {
+      container.dispose();
+    });
+
+    testWidgets('can refresh when returning to foreground', (tester) async {
+      // The value should be fetched initially
+      expect(numberOfFetchDataCalls, 1);
+
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      await tester.pumpAndSettle();
+      expect(numberOfFetchDataCalls, 1);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pumpAndSettle();
+      expect(numberOfFetchDataCalls, 2);
+
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      await tester.pumpAndSettle();
+      expect(numberOfFetchDataCalls, 2);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pumpAndSettle();
+      expect(numberOfFetchDataCalls, 3);
+    });
+
+    testWidgets('can be properly disposed', (tester) async {
+      // The value should be fetched initially
+      expect(numberOfFetchDataCalls, 1);
+
+      container.dispose();
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
+      await tester.pumpAndSettle();
+      expect(numberOfFetchDataCalls, 1);
+      tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+      await tester.pumpAndSettle();
+      expect(numberOfFetchDataCalls, 1);
     });
   });
 }
