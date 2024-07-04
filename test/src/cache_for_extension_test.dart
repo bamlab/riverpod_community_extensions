@@ -1,6 +1,6 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpods_community_extensions/src/cache_for_extension.dart';
-import 'package:test/test.dart';
 
 void main() {
   group('ProviderCache', () {
