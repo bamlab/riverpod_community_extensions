@@ -73,6 +73,10 @@ We will always answer you with pleasure 😁
 
 ---
 
+## Contributing 🤝
+
+If you want to contribute to this project, please read the [CONTRIBUTE.md](CONTRIBUTE.md) file.
+
 [dart_install_link]: https://dart.dev/get-dart
 [github_actions_link]: https://docs.github.com/en/actions/learn-github-actions
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
