@@ -2,11 +2,10 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:riverpod/riverpod.dart';
 
-/// Adds auto-refresh functionality to AutoDisposeRef<T> objects.
-/// allows you to refresh a value at a specified interval.
+/// Adds auto-refresh functionalities to AutoDisposeRef<T> objects.
 ///
-/// See [autoRefresh]
-extension AutoRefreshExtension<T> on AutoDisposeRef<T> {
+/// See [autoRefresh] and [refreshWhenReturningToForeground] for more details.
+extension RefreshExtension<T> on AutoDisposeRef<T> {
   /// Refreshes the value at the specified interval.
   ///
   /// This can be useful for scenarios where you want to refresh a value at a

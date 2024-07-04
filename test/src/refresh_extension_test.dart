@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:riverpods_community_extensions/src/auto_refresh_extension.dart';
+import 'package:riverpods_community_extensions/src/refresh_extension.dart';
 
 void main() {
   group('auto-refresh extension', () {
@@ -74,7 +74,7 @@ void main() {
     });
   });
 
-  group('refreshWhenReturningToForeground', () {
+  group('refreshWhenReturningToForeground extension', () {
     var numberOfFetchDataCalls = 0;
 
     int fetchData() {
