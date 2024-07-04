@@ -1,0 +1,36 @@
+name: riverpod_community_extensions
+
+packages:
+  - .
+
+scripts:
+  analyze:
+    exec: |
+      dart analyze . && \
+      dart format --set-exit-if-changed lib test 
+    description: Run analyzer
+
+  test:
+    exec: flutter test --no-pub --test-randomize-ordering-seed random 
+    description: Run tests
+  fix:
+    exec: |
+      dart fix . --apply && \
+      dart format lib test
+    description: Run fix
+  test:cov:
+    exec: |
+      rm -rf coverage && \
+      flutter test --coverage --no-pub --test-randomize-ordering-seed random && \
+      genhtml coverage/lcov.info -o coverage && \
+      coverde value -i coverage/lcov.info
+    description: Run test with coverage
+  test:cov:check:
+    exec: |
+      melos test:cov && \
+      coverde check 100 -i coverage/lcov.info
+    description: Check test coverage 
+  open:cov:
+    exec: |
+      open coverage/index.html
+    description: Open test coverage 
