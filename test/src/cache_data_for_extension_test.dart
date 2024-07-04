@@ -1,6 +1,6 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:riverpods_community_extensions/riverpods_community_extensions.dart';
-import 'package:test/test.dart';
+import 'package:riverpod_community_extensions/riverpod_community_extensions.dart';
 
 void main() {
   group('cacheDataFor extension', () {

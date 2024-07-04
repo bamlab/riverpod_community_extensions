@@ -1,6 +1,6 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:riverpods_community_extensions/src/debounce_extension.dart';
-import 'package:test/test.dart';
+import 'package:riverpod_community_extensions/src/debounce_extension.dart';
 
 void main() {
   group('debounce extension', () {

@@ -1,15 +1,18 @@
-name: riverpods_community_extensions
-description: Community extensions for Riverpods
+name: riverpod_community_extensions
+description: Community extensions for Riverpod
 version: 0.1.0+1
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
   melos: ^6.1.0
   mocktail: ^1.0.0
-  test: ^1.19.2
   very_good_analysis: ^5.1.0
 
 dependencies:
+  flutter:
+    sdk: flutter
   riverpod: ^2.0.0
