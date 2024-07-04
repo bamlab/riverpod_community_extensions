@@ -15,4 +15,5 @@ dev_dependencies:
 dependencies:
   flutter:
     sdk: flutter
+  connectivity_plus: ^6.0.3
   riverpod: ^2.0.0
