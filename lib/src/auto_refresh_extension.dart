@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter/widgets.dart';
 import 'package:riverpod/riverpod.dart';
 
 /// Adds auto-refresh functionality to AutoDisposeRef<T> objects.
@@ -33,5 +33,12 @@ extension AutoRefreshExtension<T> on AutoDisposeRef<T> {
   void autoRefresh(Duration duration) {
     final timer = Timer(duration, invalidateSelf);
     onDispose(timer.cancel);
+  }
+
+  /// Refreshes the value each time the app returns to foreground.
+  ///
+  void refreshWhenReturningToForeground() {
+    final listener = AppLifecycleListener(onResume: invalidateSelf);
+    onDispose(listener.dispose);
   }
 }
