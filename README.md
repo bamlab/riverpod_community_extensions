@@ -65,6 +65,14 @@ Future<int> data((ref) async {
 
 ---
 
+## 👉 About Theodo apps
+
+We are a 100 people company of the [Theodo group](https://www.theodo.fr/), developing and designing multiplatform applications with [React Native](https://www.bam.tech/expertise/react-native) and [Flutter](https://www.bam.tech/expertise/flutter) using the Lean & Agile methodology. To get more information on the solutions that would suit your needs, feel free to get in touch by [email](mailto:contact@bam.tech) or through or [contact form](https://www.bam.tech/contact)!
+
+We will always answer you with pleasure 😁
+
+---
+
 [dart_install_link]: https://dart.dev/get-dart
 [github_actions_link]: https://docs.github.com/en/actions/learn-github-actions
 [license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
