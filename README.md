@@ -4,7 +4,21 @@
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
 [![License: MIT][license_badge]][license_link]
 
-Community extensions for Riverpods
+Useful extensions on ref types for Riverpod.
+
+Ref types are the way to interact with providers in Riverpod. They are built to be composable and flexible. This package provides some useful extensions on ref types to make them even more powerful and easily add common functionalities on your providers, such as auto-refreshing for example.
+
+## Features 🚀
+
+This package adds the following methods to ref types:
+
+- `cacheFor` on `AutoDisposeRef` - Prevents the provider from being disposed for the specified duration.
+
+- `cacheDataFor` on `AutoDisposeFutureProviderRef` - Keeps the data of the future provider for the specified duration.
+
+- `debounce` on `AutoDisposeFutureProviderRef` - Wait for a specified duration before calling the provider's computation, and cancel the previous call if a new one is made.
+
+- `refreshWhenNetworkAvailable` on `AutoDisposeFutureProviderRef` - Automatically refresh the provider when the network is available. Uses the package [connectivity_plus](https://pub.dev/packages/connectivity_plus).
 
 ## Installation 💻
 
@@ -14,6 +28,39 @@ Install via `dart pub add`:
 
 ```sh
 dart pub add riverpods_community_extensions
+```
+
+## Usage 🎨
+
+Simply import the package and use the provided extensions on your ref types.
+
+Example without codegen:
+
+```dart
+import 'package:riverpods_community_extensions/riverpods_community_extensions.dart';
+import 'package:riverpod/riverpod.dart';
+
+final dataProvider = FutureProvider.autoDispose((ref) async {
+  ref.cacheDataFor(const Duration(minutes: 5));
+  return fetchData();
+});
+
+```
+
+Example with codegen:
+
+```dart
+import 'package:riverpods_community_extensions/riverpods_community_extensions.dart';
+import 'package:riverpod/riverpod.dart';
+
+part 'data_provider.g.dart';
+
+@riverpod
+Future<int> data((ref) async {
+  ref.cacheDataFor(const Duration(minutes: 5));
+  return fetchData();
+});
+
 ```
 
 ---
