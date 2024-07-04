@@ -16,7 +16,7 @@ extension AutoRefreshExtension<T> on AutoDisposeRef<T> {
   ///
   /// without codegen:
   /// ```dart
-  /// final myProvider = Provider<int>((ref) {
+  /// final dataProvider = Provider<int>((ref) {
   ///   ref.autoRefresh(const Duration(seconds: 1));
   ///   return fetchData();
   /// });
@@ -25,7 +25,7 @@ extension AutoRefreshExtension<T> on AutoDisposeRef<T> {
   /// with codegen:
   /// ```dart
   /// @riverpod
-  /// int myProvider(MyRef ref) {
+  /// int data(DataRef ref) {
   ///   ref.autoRefresh(const Duration(seconds: 1));
   ///   return fetchData();
   /// }
@@ -36,6 +36,24 @@ extension AutoRefreshExtension<T> on AutoDisposeRef<T> {
   }
 
   /// Refreshes the value each time the app returns to foreground.
+  ///
+  /// Example usages:
+  /// without codegen:
+  /// ```dart
+  /// final dataProvider = Provider<int>((ref) {
+  ///   ref.refreshWhenReturningToForeground();
+  ///   return fetchData();
+  /// });
+  /// ```
+  ///
+  /// with codegen:
+  /// ```dart
+  /// @riverpod
+  /// int data(DataRef ref) {
+  ///   ref.refreshWhenReturningToForeground();
+  ///   return fetchData();
+  /// }
+  /// ```
   ///
   void refreshWhenReturningToForeground() {
     final listener = AppLifecycleListener(onResume: invalidateSelf);
