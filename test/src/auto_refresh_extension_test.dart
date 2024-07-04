@@ -8,21 +8,22 @@ void main() {
     const moreThanTimeInterval = Duration(milliseconds: 600);
     const lessThanTimeInterval = Duration(milliseconds: 400);
 
-    var isInvalidated = false;
+    var numberOfFetchDataCalls = 0;
+
+    int fetchData() {
+      numberOfFetchDataCalls++;
+      return 42;
+    }
 
     final myProvider = Provider.autoDispose<int>((ref) {
-      ref
-        ..autoRefresh(timeInterval)
-        ..onDispose(() {
-          isInvalidated = true;
-        });
-      return 42;
+      ref.autoRefresh(timeInterval);
+      return fetchData();
     });
 
     late ProviderContainer container;
 
     setUp(() {
-      isInvalidated = false;
+      numberOfFetchDataCalls = 0;
       container = ProviderContainer()..listen(myProvider, (_, __) {});
     });
 
@@ -30,42 +31,45 @@ void main() {
       container.dispose();
     });
 
-    test('autoRefresh calls invalidate if the time interval is reached',
-        () async {
-      expect(isInvalidated, false);
+    test('autoRefresh refreshes if the time interval is reached', () async {
+      // The value should be fetched initially
+      expect(numberOfFetchDataCalls, 1);
 
       await Future<void>.delayed(
         moreThanTimeInterval,
       );
-      expect(isInvalidated, true);
+      // The value should be refreshed after the time interval
+      expect(numberOfFetchDataCalls, 2);
     });
 
-    test(
-        'autoRefresh does not call invalidate if the time interval is not '
-        'reached', () async {
-      expect(isInvalidated, false);
+    test('autoRefresh does not refresh if the time interval is not reached',
+        () async {
+      // The value should be fetched initially
+      expect(numberOfFetchDataCalls, 1);
 
       await Future<void>.delayed(
         lessThanTimeInterval,
       );
 
-      expect(isInvalidated, false);
+      // The value should not be refreshed after the time interval
+      expect(numberOfFetchDataCalls, 1);
     });
 
-    test('autoRefresh can be called multiple times', () async {
-      expect(isInvalidated, false);
+    test('autoRefresh can refresh multiple times', () async {
+      // The value should be fetched initially
+      expect(numberOfFetchDataCalls, 1);
 
       await Future<void>.delayed(
         moreThanTimeInterval,
       );
-      expect(isInvalidated, true);
-
-      isInvalidated = false;
+      // The value should be refreshed after the time interval
+      expect(numberOfFetchDataCalls, 2);
 
       await Future<void>.delayed(
         moreThanTimeInterval,
       );
-      expect(isInvalidated, true);
+      // The value should be refreshed after the time interval
+      expect(numberOfFetchDataCalls, 3);
     });
   });
 }
