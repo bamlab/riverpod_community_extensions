@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:riverpods_community_extensions/src/refresh_extension.dart';
+import 'package:riverpod_community_extensions/src/refresh_extension.dart';
 
 void main() {
   group('auto-refresh extension', () {

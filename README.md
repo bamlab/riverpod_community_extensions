@@ -1,4 +1,4 @@
-# Riverpods Community Extensions
+# Riverpod Community Extensions
 
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
@@ -22,12 +22,12 @@ This package adds the following methods to ref types:
 
 ## Installation 💻
 
-**❗ In order to start using Riverpods Community Extensions you must have the [Dart SDK][dart_install_link] installed on your machine.**
+**❗ In order to start using Riverpod Community Extensions you must have the [Dart SDK][dart_install_link] installed on your machine.**
 
 Install via `dart pub add`:
 
 ```sh
-dart pub add riverpods_community_extensions
+dart pub add riverpod_community_extensions
 ```
 
 ## Usage 🎨
@@ -37,7 +37,7 @@ Simply import the package and use the provided extensions on your ref types.
 Example without codegen:
 
 ```dart
-import 'package:riverpods_community_extensions/riverpods_community_extensions.dart';
+import 'package:riverpod_community_extensions/riverpod_community_extensions.dart';
 import 'package:riverpod/riverpod.dart';
 
 final dataProvider = FutureProvider.autoDispose((ref) async {
@@ -50,7 +50,7 @@ final dataProvider = FutureProvider.autoDispose((ref) async {
 Example with codegen:
 
 ```dart
-import 'package:riverpods_community_extensions/riverpods_community_extensions.dart';
+import 'package:riverpod_community_extensions/riverpod_community_extensions.dart';
 import 'package:riverpod/riverpod.dart';
 
 part 'data_provider.g.dart';

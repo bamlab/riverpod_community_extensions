@@ -1,5 +1,5 @@
-name: riverpods_community_extensions
-description: Community extensions for Riverpods
+name: riverpod_community_extensions
+description: Community extensions for Riverpod
 version: 0.1.0+1
 
 environment:
