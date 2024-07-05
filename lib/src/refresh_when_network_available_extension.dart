@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:riverpod_community_extensions/src/connectivity_stream_provider.dart';
 
 /// Adds network-aware refresh functionality to AutoDisposeRef<T> objects.
 /// This extension uses the connectivity_plus package to listen for network
@@ -34,8 +35,6 @@ extension RefreshWhenNetworkAvailableExtension<T> on AutoDisposeRef<T> {
   /// }
   /// ```
   void refreshWhenNetworkAvailable() {
-    final connectivityStream = Connectivity().onConnectivityChanged;
-
     var isNetworkAvailable = false;
     const validResults = [
       ConnectivityResult.mobile,
@@ -45,18 +44,17 @@ extension RefreshWhenNetworkAvailableExtension<T> on AutoDisposeRef<T> {
       ConnectivityResult.other,
     ];
 
-    final connectivitySubscription =
-        connectivityStream.listen((connectivityResults) {
-      final currentlyAvailable =
-          connectivityResults.any((result) => validResults.contains(result));
-      if (currentlyAvailable && !isNetworkAvailable) {
-        isNetworkAvailable = true;
-        invalidateSelf();
-      } else {
-        isNetworkAvailable = false;
-      }
+    listen(connectivityStreamProvider, (_, connectivityResults) {
+      connectivityResults.whenData((data) {
+        final currentlyAvailable =
+            data.any((result) => validResults.contains(result));
+        if (currentlyAvailable && !isNetworkAvailable) {
+          isNetworkAvailable = true;
+          invalidateSelf();
+        } else {
+          isNetworkAvailable = false;
+        }
+      });
     });
-
-    onDispose(connectivitySubscription.cancel);
   }
 }
