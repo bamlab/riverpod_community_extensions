@@ -74,4 +74,14 @@ void main() {
       expect(numberOfFetchDataCalls, 2);
     });
   });
+
+  group('ConnectivityStreamProvider tests', () {
+    test('connectivityStreamProvider provides an AsyncValue', () {
+      final container = ProviderContainer();
+      final providerState = container.read(connectivityStreamProvider);
+
+      // Check that the initial state is AsyncLoading.
+      expect(providerState, isA<AsyncLoading<List<ConnectivityResult>>>());
+    });
+  });
 }
