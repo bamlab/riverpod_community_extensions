@@ -16,6 +16,7 @@ dev_dependencies:
   very_good_analysis: ^5.1.0
 
 dependencies:
+  connectivity_plus: ^6.0.3
   flutter:
     sdk: flutter
   riverpod: ^2.0.0
