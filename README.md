@@ -1,12 +1,17 @@
 # Riverpod Community Extensions
 
-[![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
 [![License: MIT][license_badge]][license_link]
 
-Useful extensions on ref types for Riverpod.
+<p>
+  <a href="https://apps.theodo.com">
+  <img  alt="logo" src="https://raw.githubusercontent.com/bamlab/theodo_analysis/main/doc/theodo_apps_white.png" width="200"/>
+  </a>
+  </br>
+  <p>Useful extensions on ref types for Riverpod.</p>
 
-Ref types are the way to interact with providers in Riverpod. They are built to be composable and flexible. This package provides some useful extensions on ref types to make them even more powerful and easily add common functionalities on your providers, such as auto-refreshing for example.
+  <p>Ref types are the way to interact with providers in Riverpod. They are built to be composable and flexible. This package provides some useful extensions on ref types to make them even more powerful and easily add common functionalities on your providers, such as auto-refreshing for example.</p>
+</p>
 
 ## Features 🚀
 
@@ -67,7 +72,7 @@ Future<int> data((ref) async {
 
 ## 👉 About Theodo apps
 
-We are a 100 people company of the [Theodo group](https://www.theodo.fr/), developing and designing multiplatform applications with [React Native](https://www.bam.tech/expertise/react-native) and [Flutter](https://www.bam.tech/expertise/flutter) using the Lean & Agile methodology. To get more information on the solutions that would suit your needs, feel free to get in touch by [email](mailto:contact@bam.tech) or through or [contact form](https://www.bam.tech/contact)!
+We are a 130 people company developing and designing universal applications with [React Native](https://apps.theodo.com/expertise/react-native) and [Flutter](https://apps.theodo.com/expertise/flutter) using the Lean & Agile methodology. To get more information on the solutions that would suit your needs, feel free to get in touch by [email](mailto://contact-apps@theodo.com) or through or [contact form](https://apps.theodo.com/contact)!
 
 We will always answer you with pleasure 😁
 
