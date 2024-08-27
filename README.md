@@ -2,7 +2,7 @@
 
 <p>
   <a href="https://apps.theodo.com">
-  <img  alt="logo" src="https://raw.githubusercontent.com/bamlab/theodo_analysis/main/doc/theodo_apps_white.png" width="200"/>
+  <img  alt="logo" src="doc/theodo_apps_white.png" width="200"/>
   </a>
   </br>
   <p>Useful extensions on ref types for Riverpod.</p>
