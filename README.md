@@ -20,7 +20,11 @@ This package adds the following methods to ref types:
 
 - `debounce` on `AutoDisposeFutureProviderRef` - Wait for a specified duration before calling the provider's computation, and cancel the previous call if a new one is made.
 
-- `refreshWhenNetworkAvailable` on `AutoDisposeFutureProviderRef` - Automatically refresh the provider when the network is available. Uses the package [connectivity_plus](https://pub.dev/packages/connectivity_plus).
+- `autoRefresh` on `AutoDisposeRef` - Refreshes the value at a specified interval. Useful for scenarios where periodic updates of a provider's value are required.
+
+- `refreshWhenReturningToForeground` on `AutoDisposeRef` - Refreshes the provider's value each time the app returns to the foreground, ensuring the data is always up to date after returning to the app.
+
+- `refreshWhenNetworkAvailable` on `AutoDisposeRef` - Automatically refresh the provider when the network is available. Uses the package [connectivity_plus](https://pub.dev/packages/connectivity_plus).
 
 ## Installation 💻
 
