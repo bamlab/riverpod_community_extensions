@@ -1,12 +1,14 @@
 # Riverpod Community Extensions
 
-[![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
-[![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
-[![License: MIT][license_badge]][license_link]
+<p>
+  <a href="https://apps.theodo.com">
+  <img  alt="logo" src="https://raw.githubusercontent.com/bamlab/riverpod_community_extensions/main/doc/theodo_apps_white.png" width="200"/>
+  </a>
+  </br>
+  <p>Useful extensions on ref types for Riverpod.</p>
 
-Useful extensions on ref types for Riverpod.
-
-Ref types are the way to interact with providers in Riverpod. They are built to be composable and flexible. This package provides some useful extensions on ref types to make them even more powerful and easily add common functionalities on your providers, such as auto-refreshing for example.
+  <p>Ref types are the way to interact with providers in Riverpod. They are built to be composable and flexible. This package provides some useful extensions on ref types to make them even more powerful and easily add common functionalities on your providers, such as auto-refreshing for example.</p>
+</p>
 
 ## Features 🚀
 
@@ -18,7 +20,11 @@ This package adds the following methods to ref types:
 
 - `debounce` on `AutoDisposeFutureProviderRef` - Wait for a specified duration before calling the provider's computation, and cancel the previous call if a new one is made.
 
-- `refreshWhenNetworkAvailable` on `AutoDisposeFutureProviderRef` - Automatically refresh the provider when the network is available. Uses the package [connectivity_plus](https://pub.dev/packages/connectivity_plus).
+- `autoRefresh` on `AutoDisposeRef` - Refreshes the value at a specified interval. Useful for scenarios where periodic updates of a provider's value are required.
+
+- `refreshWhenReturningToForeground` on `AutoDisposeRef` - Refreshes the provider's value each time the app returns to the foreground, ensuring the data is always up to date after returning to the app.
+
+- `refreshWhenNetworkAvailable` on `AutoDisposeRef` - Automatically refresh the provider when the network is available. Uses the package [connectivity_plus](https://pub.dev/packages/connectivity_plus).
 
 ## Installation 💻
 
@@ -67,7 +73,7 @@ Future<int> data((ref) async {
 
 ## 👉 About Theodo apps
 
-We are a 100 people company of the [Theodo group](https://www.theodo.fr/), developing and designing multiplatform applications with [React Native](https://www.bam.tech/expertise/react-native) and [Flutter](https://www.bam.tech/expertise/flutter) using the Lean & Agile methodology. To get more information on the solutions that would suit your needs, feel free to get in touch by [email](mailto:contact@bam.tech) or through or [contact form](https://www.bam.tech/contact)!
+We are a 130 people company developing and designing universal applications with [React Native](https://apps.theodo.com/expertise/react-native) and [Flutter](https://apps.theodo.com/expertise/flutter) using the Lean & Agile methodology. To get more information on the solutions that would suit your needs, feel free to get in touch by [email](mailto://contact-apps@theodo.com) or through or [contact form](https://apps.theodo.com/contact)!
 
 We will always answer you with pleasure 😁
 
