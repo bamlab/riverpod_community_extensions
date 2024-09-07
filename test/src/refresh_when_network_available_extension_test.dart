@@ -2,12 +2,9 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_community_extensions/src/connectivity_stream_provider.dart';
 import 'package:riverpod_community_extensions/src/refresh_when_network_available_extension.dart';
-
-class MockConnectivity extends Mock implements Connectivity {}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
