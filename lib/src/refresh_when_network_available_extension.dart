@@ -8,7 +8,8 @@ import 'package:riverpod_community_extensions/src/connectivity_stream_provider.d
 /// available.
 ///
 /// See [refreshWhenNetworkAvailable]
-extension RefreshWhenNetworkAvailableExtension<T> on AutoDisposeRef<T> {
+extension RefreshWhenNetworkAvailableExtension<T>
+    on AutoDisposeFutureProviderRef<T> {
   /// Refreshes the provider when the network becomes available after being
   /// unavailable.
   ///
@@ -50,7 +51,9 @@ extension RefreshWhenNetworkAvailableExtension<T> on AutoDisposeRef<T> {
             data.any((result) => validResults.contains(result));
         if (currentlyAvailable && !isNetworkAvailable) {
           isNetworkAvailable = true;
-          invalidateSelf();
+          if (state.hasError) {
+            invalidateSelf();
+          }
         } else {
           isNetworkAvailable = false;
         }
