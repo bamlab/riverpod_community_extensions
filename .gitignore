@@ -3,3 +3,5 @@
 melos_riverpod_community_extensions.iml
 *build/
 .idea
+.flutter-plugins
+.flutter-plugins-dependencies
