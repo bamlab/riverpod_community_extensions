@@ -41,51 +41,53 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     var data = ref.read(cacheDataForProvider.future);
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Gets mock data. After 3 seconds, it returns 42, '
-              'and then cache the result for 4 seconds.',
-            ),
-            const Divider(indent: 20, endIndent: 20),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ElevatedButton(
-                  child: const Text(
-                    'get data once again',
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      data = ref.read(cacheDataForProvider.future);
-                    });
-                  },
-                ),
-                const SizedBox(width: 10),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: FutureBuilder(
-                    future: data,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.done) {
-                        final snapshotData = snapshot.data;
-                        if (snapshotData == null) {
-                          return const Text('no data');
-                        }
-
-                        return Text('data: $snapshotData');
-                      }
-
-                      return const CircularProgressIndicator();
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Gets mock data. After 3 seconds, it returns 42, '
+                'and then cache the result for 4 seconds.',
+              ),
+              const Divider(indent: 20, endIndent: 20),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ElevatedButton(
+                    child: const Text(
+                      'get data once again',
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        data = ref.read(cacheDataForProvider.future);
+                      });
                     },
                   ),
-                ),
-              ],
-            ),
-          ],
+                  const SizedBox(width: 10),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: FutureBuilder(
+                      future: data,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          final snapshotData = snapshot.data;
+                          if (snapshotData == null) {
+                            return const Text('no data');
+                          }
+
+                          return Text('data: $snapshotData');
+                        }
+
+                        return const CircularProgressIndicator();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
