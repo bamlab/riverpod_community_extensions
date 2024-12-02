@@ -1,1 +1,5 @@
-include: package:flutter_lints/flutter.yaml
+include: package:theodo_analysis/analysis_options.yaml
+linter:
+  rules:
+    # Not mandatory since the example is not a sdk
+    public_member_api_docs: false

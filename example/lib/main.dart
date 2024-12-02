@@ -9,6 +9,7 @@ part 'main.g.dart';
 Future<int> cacheDataFor(CacheDataForRef ref) async {
   ref.cacheDataFor(const Duration(seconds: 4));
   await Future.delayed(const Duration(seconds: 3));
+
   return 42;
 }
 
@@ -36,16 +37,18 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    Future<int>? data = ref.read(cacheDataForProvider.future);
+    // ignore: avoid-ref-read-inside-build , this is a demonstration for a side effect
+    var data = ref.read(cacheDataForProvider.future);
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Gets mock data. After 3 seconds, it returns 42, and then cache the result for 4 seconds.',
+              'Gets mock data. After 3 seconds, it returns 42, '
+              'and then cache the result for 4 seconds.',
             ),
             const Divider(indent: 20, endIndent: 20),
             Row(
@@ -63,18 +66,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
                 const SizedBox(width: 10),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8),
                   child: FutureBuilder(
-                      future: data,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
-                          return Text('data:${snapshot.data.toString()}');
+                    future: data,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done) {
+                        final snapshotData = snapshot.data;
+                        if (snapshotData == null) {
+                          return const Text('no data');
                         }
-                        return const CircularProgressIndicator();
-                      }),
+
+                        return Text('data: $snapshotData');
+                      }
+
+                      return const CircularProgressIndicator();
+                    },
+                  ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

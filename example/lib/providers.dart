@@ -7,5 +7,6 @@ part 'providers.g.dart';
 Future<int> cacheDataFor(CacheDataForRef ref) async {
   ref.cacheDataFor(const Duration(seconds: 4));
   await Future.delayed(const Duration(seconds: 3));
+
   return 42;
 }
