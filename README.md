@@ -24,7 +24,7 @@ This package adds the following methods to ref types:
 
 - `refreshWhenReturningToForeground` on `AutoDisposeRef` - Refreshes the provider's value each time the app returns to the foreground, ensuring the data is always up to date after returning to the app.
 
-- `refreshWhenNetworkAvailable` on `AutoDisposeRef` - Automatically refresh the provider when the network is available. Uses the package [connectivity_plus](https://pub.dev/packages/connectivity_plus).
+- `refreshWhenNetworkAvailable` on `AutoDisposeFutureProviderRef` - Automatically refresh the provider when the network is available if it has error state. Uses the package [connectivity_plus](https://pub.dev/packages/connectivity_plus).
 
 ## Installation 💻
 
