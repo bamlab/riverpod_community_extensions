@@ -14,9 +14,20 @@ import 'package:riverpod/riverpod.dart';
 extension ProviderCache<T> on AutoDisposeRef<T> {
   /// Keeps the surrounding provider alive for [duration].
   ///
-  /// Eg.
+  /// Example usages:
+  /// without codegen:
   /// ```dart
-  /// final myProvider = Provider.autoDispose((ref) {
+  /// final myValueProvider = Provider.autoDispose((ref) {
+  ///   ref.cacheFor(const Duration(minutes: 5));
+  ///
+  ///   return 'myValue';
+  /// });
+  ///```
+  ///
+  /// with codegen:
+  ///```dart
+  /// @riverpod
+  /// String myValue (MyValueRef ref) async {
   ///   ref.cacheFor(const Duration(minutes: 5));
   ///
   ///   return 'myValue';

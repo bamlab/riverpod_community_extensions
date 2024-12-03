@@ -8,9 +8,6 @@ import 'package:riverpod/riverpod.dart';
 extension RefreshExtension<T> on AutoDisposeRef<T> {
   /// Refreshes the value at the specified interval.
   ///
-  /// This can be useful for scenarios where you want to refresh a value at a
-  /// specified interval.
-  ///
   /// Example usages:
   ///
   /// without codegen:
