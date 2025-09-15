@@ -12,7 +12,7 @@ void main() {
   group('RefreshWhenNetworkAvailableExtension Tests', () {
     late StreamController<List<ConnectivityResult>> connectivityController;
     late ProviderContainer container;
-    late AutoDisposeFutureProvider<int> myProvider;
+    late FutureProvider<int> myProvider;
     late Stream<List<ConnectivityResult>> connectivityStream;
 
     var numberOfFetchDataCalls = 0;

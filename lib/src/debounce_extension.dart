@@ -6,7 +6,7 @@ import 'package:riverpod/riverpod.dart';
 /// allows you to delay an operation to reduce redundant calls.
 ///
 /// See [debounce]
-extension DebounceExtension<T> on AutoDisposeFutureProviderRef<T> {
+extension DebounceExtension on Ref {
   /// Debounces an operation until the specified [Duration] has passed without
   /// any further invocations.
   ///

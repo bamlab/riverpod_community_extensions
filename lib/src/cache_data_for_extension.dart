@@ -9,7 +9,7 @@ import 'package:riverpod/riverpod.dart';
 /// after they're no longer listened to.
 ///
 /// See [cacheDataFor]
-extension CacheDataForExtension<T> on AutoDisposeFutureProviderRef<T> {
+extension CacheDataForExtension<T> on Ref {
   /// When invoked, keeps the data state of your provider alive for [duration].
   /// Doesn't impact the error and loading states of the provider.
   ///

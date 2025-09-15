@@ -9,8 +9,7 @@ import 'package:riverpod_community_extensions/src/connectivity_stream_provider.d
 /// available if it's in error state.
 ///
 /// See [refreshWhenNetworkAvailable]
-extension RefreshWhenNetworkAvailableExtension<T>
-    on AutoDisposeFutureProviderRef<T> {
+extension RefreshWhenNetworkAvailableExtension on Ref {
   /// Refreshes the provider when the network becomes available after being
   /// unavailable, if the provider is in error state.
   ///

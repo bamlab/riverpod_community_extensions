@@ -5,7 +5,7 @@ import 'package:riverpod/riverpod.dart';
 /// Adds auto-refresh functionalities to AutoDisposeRef<T> objects.
 ///
 /// See [autoRefresh] and [refreshWhenReturningToForeground] for more details.
-extension RefreshExtension<T> on AutoDisposeRef<T> {
+extension RefreshExtension on Ref {
   /// Refreshes the value at the specified interval.
   ///
   /// Example usages:
