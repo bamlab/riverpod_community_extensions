@@ -2,23 +2,33 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_community_extensions/src/cache_for_extension.dart';
 
+class _TestStateProvider extends Notifier<int> {
+  @override
+  int build() {
+    ref.cacheFor(_cacheDuration);
+
+    return 0;
+  }
+}
+
+const _cacheDuration = Duration(milliseconds: 20);
+
 void main() {
   group('ProviderCache', () {
     group('cacheFor extension', () {
-      const cacheDuration = Duration(milliseconds: 20);
       const defaultStateValue = 0;
       const onDisposeComputingDuration = Duration(milliseconds: 1);
 
-      var container = ProviderContainer();
-      var testStateProvider = StateProvider.autoDispose<int>((ref) => 0);
+      late ProviderContainer container;
+      late NotifierProvider testStateProvider;
 
       setUp(() {
         container = ProviderContainer();
-        testStateProvider = StateProvider.autoDispose<int>((ref) {
-          ref.cacheFor(cacheDuration);
-
-          return defaultStateValue;
-        });
+        testStateProvider = NotifierProvider<_TestStateProvider, int>(
+          _TestStateProvider.new,
+          isAutoDispose: true,
+          retry: (_, __) => null,
+        );
       });
 
       tearDown(() {
@@ -39,7 +49,7 @@ void main() {
       test('re-instanciate provider if no value is in cache', () async {
         container.read(testStateProvider.notifier).state = 1;
 
-        await Future<void>.delayed(cacheDuration);
+        await Future<void>.delayed(_cacheDuration);
         // Simulate an event loop
         await Future<void>.delayed(onDisposeComputingDuration);
 

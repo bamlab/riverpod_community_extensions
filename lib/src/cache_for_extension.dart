@@ -4,14 +4,14 @@ import 'dart:async';
 
 import 'package:riverpod/riverpod.dart';
 
-/// Adds caching functionality to `Ref<T>` objects.
+/// Adds caching functionality to `Ref` objects.
 ///
-/// Keeps `Ref<T>` objects, typically Riverpod providers, alive
+/// Keeps `Ref` objects, typically Riverpod providers, alive
 /// for a specified duration, preventing them from being disposed immediately
 /// after they're no longer listened to.
 ///
 /// See [cacheFor]
-extension ProviderCache<T> on Ref<T> {
+extension ProviderCache on Ref {
   /// Keeps the surrounding provider alive for [duration].
   ///
   /// Example usages:
