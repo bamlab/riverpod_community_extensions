@@ -12,8 +12,8 @@
 
 ## Riverpod Versions 🔖
 
-Riverpod Community Extensions version 2 is only compatible with riverpod 2.
-If you want to use riverpod 3, migrate to riverpod_community_extension v3.
+Riverpod Community Extensions version 3 is only compatible with riverpod 3.
+If you want to use riverpod 2, revert to riverpod_community_extension v2.
 
 ## Features 🚀
 
