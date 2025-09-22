@@ -9,15 +9,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_riverpod: ^2.6.1
-  riverpod_annotation: ^2.6.1
+  flutter_riverpod: ^3.0.0
+  riverpod_annotation: ^3.0.0
   riverpod_community_extensions: 
     path: ../
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  riverpod_generator: ^2.6.5
+  riverpod_generator: ^3.0.0
   build_runner: ^2.4.11
   theodo_analysis: ^1.6.0
 

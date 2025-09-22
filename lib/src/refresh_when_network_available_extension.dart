@@ -2,52 +2,55 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_community_extensions/src/connectivity_stream_provider.dart';
 
-/// Adds network-aware refresh functionality to
-/// `Ref<T>` objects.
+/// Adds network-aware refresh functionality to AsyncNotifier providers.
+///
 /// This extension uses the connectivity_plus package to listen for network
 /// status changes and refreshes the provider when the network becomes
 /// available if it's in error state.
 ///
-/// See [refreshWhenNetworkAvailable]
-extension RefreshWhenNetworkAvailableExtension<T> on Ref<T> {
+/// See [refreshWhenNetworkAvailable] for usage details.
+extension RefreshWhenNetworkAvailableExtension<T>
+    on AnyNotifier<AsyncValue<T>, T> {
   /// Refreshes the provider when the network becomes available after being
   /// unavailable, if the provider is in error state.
   ///
-  /// This extension can only be used inside FutureProvider. Otherwise, it will
-  /// have no effect.
+  /// This is particularly useful for network-dependent operations that should
+  /// automatically retry when connectivity is restored.
   ///
-  /// Example usages:
+  /// Example usage:
   ///
-  /// without codegen:
+  /// Without code-gen
+  ///
   /// ```dart
-  /// final myProvider = FutureProvider.autoDispose<int>((ref) async {
-  ///   ref.refreshWhenNetworkAvailable();
-  ///   final result = await fetchData(); // Assume fetchData is a function that fetches data over the network.
-  ///   return result;
-  /// });
+  /// final userProvider = AsyncNotifierProvider<UserNotifier, User>(
+  ///   UserNotifier.new,
+  ///   isAutoDispose: true,
+  /// );
+  ///
+  /// class UserNotifier extends AutoDisposeAsyncNotifier<User> {
+  ///   @override
+  ///   Future<User> build() async {
+  ///     ref.refreshWhenNetworkAvailable();
+  ///
+  ///     return await fetchUserFromApi();
+  ///   }
+  /// }
   /// ```
   ///
-  /// with codegen:
+  /// With code-gen
+  ///
   /// ```dart
   /// @riverpod
-  /// Future<int> myProvider(MyProviderRef ref) async {
-  ///   ref.refreshWhenNetworkAvailable();
-  ///   final result = await fetchData();
-  ///   return result;
+  /// class UserNotifier extends _$UserNotifier {
+  ///   @override
+  ///   Future<User> build() async {
+  ///     ref.refreshWhenNetworkAvailable();
+  ///
+  ///     return await fetchUserFromApi();
+  ///   }
   /// }
   /// ```
   void refreshWhenNetworkAvailable() {
-    assert(
-      // ignore: deprecated_member_use, ok for riverpod v2
-      this is FutureProviderRef,
-      'refreshWhenNetworkAvailable can only be used on '
-      'FutureProviderRef',
-    );
-    // ignore: deprecated_member_use, ok for riverpod v2
-    if (this is! FutureProviderRef) return;
-    // ignore: deprecated_member_use, ok for riverpod v2
-    final ref = this as FutureProviderRef;
-
     var isNetworkAvailable = false;
     const validResults = [
       ConnectivityResult.mobile,
@@ -57,14 +60,15 @@ extension RefreshWhenNetworkAvailableExtension<T> on Ref<T> {
       ConnectivityResult.other,
     ];
 
-    listen(connectivityStreamProvider, (_, connectivityResults) {
+    ref.listen(connectivityStreamProvider, (_, connectivityResults) {
       connectivityResults.whenData((data) {
         final currentlyAvailable =
             data.any((result) => validResults.contains(result));
         if (currentlyAvailable && !isNetworkAvailable) {
           isNetworkAvailable = true;
-          if (ref.state.hasError) {
-            invalidateSelf();
+          // ignore: invalid_use_of_visible_for_testing_member, Safe because inside listenSelf
+          if (state.hasError) {
+            ref.invalidateSelf();
           }
         } else {
           isNetworkAvailable = false;

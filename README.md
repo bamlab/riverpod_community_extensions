@@ -12,8 +12,8 @@
 
 ## Riverpod Versions 🔖
 
-Riverpod Community Extensions version 2 is only compatible with riverpod 2.
-If you want to use riverpod 3, migrate to riverpod_community_extension v3.
+Riverpod Community Extensions version 3 is only compatible with riverpod 3.
+If you want to use riverpod 2, revert to riverpod_community_extension v2.
 
 ## Features 🚀
 
@@ -21,13 +21,13 @@ This package adds the following methods to ref types:
 
 - `cacheFor` on `Ref` - Prevents the provider from being disposed for the specified duration.
 
-- `cacheDataFor` on `Ref` - Keeps the data of the future provider for the specified duration. Will only work inside FutureProvider.
+- `cacheDataFor` on `AsyncNotifier` - Keeps the data of the Async Notifier for the specified duration.
 
 - `debounce` on `Ref` - Wait for a specified duration before calling the provider's computation, and cancel the previous call if a new one is made.
 
 - `autoRefresh` on `Ref` - Refreshes the value at a specified interval. Useful for scenarios where periodic updates of a provider's value are required.
 
-- `refreshWhenReturningToForeground` on `Ref` - Refreshes the provider's value each time the app returns to the foreground, ensuring the data is always up to date after returning to the app.
+- `refreshWhenReturningToForeground` on `AsyncNotifier` - Refreshes the AsyncNotifier's value each time the app returns to the foreground, ensuring the data is always up to date after returning to the app.
 
 - `refreshWhenNetworkAvailable` on `Ref` - Automatically refresh the provider when the network is available if it has error state. Uses the package [connectivity_plus](https://pub.dev/packages/connectivity_plus). Will only for inside FutureProvider.
 
@@ -51,11 +51,17 @@ Example without codegen:
 import 'package:riverpod_community_extensions/riverpod_community_extensions.dart';
 import 'package:riverpod/riverpod.dart';
 
-final dataProvider = FutureProvider.autoDispose((ref) async {
-  ref.cacheDataFor(const Duration(minutes: 5));
-  return fetchData();
-});
-
+final dataProvider = AsyncNotifierProvider<DataNotifier, int>(
+  DataNotifier.new,
+  isAutoDispose: true,
+);
+class DataNotifier extends AutoDisposeAsyncNotifier<int> {
+  @override
+  Future<int> build() async {
+    ref.cacheDataFor(const Duration(minutes: 5));
+    return await fetchDataFromApi();
+  }
+}
 ```
 
 Example with codegen:
@@ -67,11 +73,14 @@ import 'package:riverpod/riverpod.dart';
 part 'data_provider.g.dart';
 
 @riverpod
-Future<int> data((Ref ref) async {
-  ref.cacheDataFor(const Duration(minutes: 5));
-  return fetchData();
-});
+class DataNotifier extends _$DataNotifier {
+  @override
+  Future<int> build() async {
+    ref.cacheDataFor(const Duration(minutes: 5));
 
+    return await fetchUserFromApi();
+  }
+}
 ```
 
 ---

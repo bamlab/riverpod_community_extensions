@@ -2,66 +2,83 @@ import 'dart:async';
 
 import 'package:riverpod/riverpod.dart';
 
-/// Adds caching functionality to FutureProvider refs.
+/// Adds caching functionality to AsyncNotifier providers.
 ///
-/// Keeps auto dispose future providers alive
-/// for a specified duration, preventing them from being disposed immediately
-/// after they're no longer listened to.
+/// This extension provides a [cacheDataFor] method that keeps auto-dispose
+/// async notifiers alive for a specified duration, preventing them from being
+/// disposed immediately after they're no longer listened to.
 ///
-/// See [cacheDataFor]
-extension CacheDataForExtension<T> on Ref<T> {
-  /// When invoked, keeps the data state of your provider alive for [duration].
-  /// Doesn't impact the error and loading states of the provider.
+/// The caching only affects the data state of the provider and doesn't impact
+/// error or loading states.
+///
+/// See [cacheDataFor] for usage details.
+extension CacheDataForExtension<T> on AnyNotifier<AsyncValue<T>, T> {
+  /// Keeps the data state of this AsyncNotifier alive for the specified
+  /// [duration].
   ///
-  /// This extension can only be used inside FutureProvider. Otherwise, it will
-  /// have no effect.
   ///
-  /// Example usages:
-  /// without codegen:
+  /// This is particularly useful for expensive operations that you want to
+  /// cache temporarily, such as network requests or heavy computations.
+  ///
+  /// Example usage:
+  ///
+  /// Without code-gen
+  ///
   /// ```dart
-  /// final myValueProvider = FutureProvider.autoDispose((ref) {
-  ///   ref.cacheDataFor(const Duration(minutes: 5));
+  /// final userProvider = AsyncNotifierProvider<UserNotifier, User>(
+  ///   UserNotifier.new,
+  ///   isAutoDispose: true,
+  /// );
   ///
-  ///   return Future.value('myValue');
-  /// });
-  ///```
+  /// class UserNotifier extends AutoDisposeAsyncNotifier<User> {
+  ///   @override
+  ///   Future<User> build() async {
+  ///     ref.cacheDataFor(const Duration(minutes: 5));
   ///
-  /// with codegen:
-  ///```dart
+  ///     return await fetchUserFromApi();
+  ///   }
+  /// }
+  /// ```
+  ///
+  /// With code-gen
+  ///
+  /// ```dart
   /// @riverpod
-  /// Future<String> myValue (MyValueRef ref) async {
-  ///   ref.cacheDataFor(const Duration(minutes: 5));
+  /// class UserNotifier extends _$UserNotifier {
+  ///   @override
+  ///   Future<User> build() async {
+  ///     ref.cacheDataFor(const Duration(minutes: 5));
   ///
-  ///   return Future.value('myValue');
-  /// });
-  ///```
+  ///     return await fetchUserFromApi();
+  ///   }
+  /// }
+  /// ```
   void cacheDataFor(Duration duration) {
-    assert(
-      // ignore: deprecated_member_use, ok for riverpod v2
-      this is FutureProviderRef,
-      'cacheDataFor can only be used on FutureProvider refs',
-    );
-    // ignore: deprecated_member_use, ok for riverpod v2
-    if (this is! FutureProviderRef) return;
-
-    var link = keepAlive();
+    var link = ref.keepAlive();
     var timer = Timer(duration, link.close);
 
-    onDispose(() {
+    ref.onDispose(() {
       timer.cancel();
     });
 
     // ignore: deprecated_member_use, ok for riverpod v2
     listenSelf((_, newAsyncValue) {
-      if (newAsyncValue is AsyncError<T>) {
-        timer.cancel();
-        link.close();
-      } else if (newAsyncValue is AsyncData<T>) {
-        timer.cancel();
-        link.close();
+      // Use Riverpod 3.0's sealed AsyncValue for exhaustive pattern matching
+      switch (newAsyncValue) {
+        case AsyncLoading():
+          // Do nothing during loading - keep existing cache
+          break;
+        case AsyncData():
+          // Reset cache timer when new data arrives
+          timer.cancel();
+          link.close();
 
-        link = keepAlive();
-        timer = Timer(duration, link.close);
+          link = ref.keepAlive();
+          timer = Timer(duration, link.close);
+        case AsyncError():
+          // Clear cache immediately on error
+          timer.cancel();
+          link.close();
       }
     });
   }

@@ -1,6 +1,6 @@
 name: riverpod_community_extensions
 description: Extends Riverpod ref types with additional helpers, to easily add common functionalities to your providers.
-version: 2.0.0
+version: 3.0.0
 homepage: https://github.com/bamlab/riverpod_community_extensions
 repository: https://github.com/bamlab/riverpod_community_extensions
 issue_tracker: https://github.com/bamlab/riverpod_community_extensions/issues
@@ -19,7 +19,7 @@ dependencies:
   connectivity_plus: ^7.0.0
   flutter:
     sdk: flutter
-  riverpod: ">=2.6.1 <3.0.0"
+  riverpod: ^3.0.0
 
 melos:
   scripts:

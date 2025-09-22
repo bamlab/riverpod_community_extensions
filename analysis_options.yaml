@@ -1,5 +1,9 @@
 include: package:theodo_analysis/analysis_options.yaml
 
+analyzer:
+  errors:
+    invalid_use_of_protected_member: ignore
+
 dart_code_metrics:
   rules:
     prefer-trailing-comma: false
