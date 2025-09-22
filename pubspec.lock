@@ -449,10 +449,10 @@ packages:
     dependency: "direct dev"
     description:
       name: theodo_analysis
-      sha256: ee25341e8a6b166ab278f8a0ecf3de33d75470166c4050d34d50f269f833fdd3
+      sha256: "1a66eba0fade1c4e10c8e58a52064566e36c24966563602d9130f878b857f54e"
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.0"
+    version: "1.6.0"
   typed_data:
     dependency: transitive
     description:
