@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:riverpod/riverpod.dart';
 
-/// Adds debounce functionality to `Ref<T>` objects.
+/// Adds debounce functionality to `Ref` objects.
 /// allows you to delay an operation to reduce redundant calls.
 ///
 /// See [debounce]
-extension DebounceExtension<T> on Ref<T> {
+extension DebounceExtension on Ref {
   /// Debounces an operation until the specified [Duration] has passed without
   /// any further invocations.
   ///
