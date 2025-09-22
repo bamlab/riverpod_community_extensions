@@ -19,6 +19,7 @@ void main() {
 
     Future<int> fetchData() {
       numberOfFetchDataCalls++;
+
       return Future.value(42);
     }
 
@@ -38,6 +39,7 @@ void main() {
         'and provider has data', () async {
       myProvider = FutureProvider.autoDispose<int>((ref) async {
         ref.refreshWhenNetworkAvailable();
+
         return fetchData();
       });
 
@@ -46,7 +48,7 @@ void main() {
           connectivityStreamProvider.overrideWith((ref) => connectivityStream),
         ],
       )..listen(myProvider, (_, __) {});
-      expect(numberOfFetchDataCalls, 1);
+      expect(numberOfFetchDataCalls, equals(1));
 
       // Simulate network being offline
       connectivityController.add([ConnectivityResult.none]);
@@ -54,7 +56,7 @@ void main() {
       // Wait for the potential refresh to happen
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      expect(numberOfFetchDataCalls, 1);
+      expect(numberOfFetchDataCalls, equals(1));
     });
 
     test(
@@ -62,6 +64,7 @@ void main() {
         'and provider has data', () async {
       myProvider = FutureProvider.autoDispose<int>((ref) async {
         ref.refreshWhenNetworkAvailable();
+
         return fetchData();
       });
 
@@ -70,7 +73,7 @@ void main() {
           connectivityStreamProvider.overrideWith((ref) => connectivityStream),
         ],
       )..listen(myProvider, (_, __) {});
-      expect(numberOfFetchDataCalls, 1);
+      expect(numberOfFetchDataCalls, equals(1));
 
       // Simulate network being online
       connectivityController.add([ConnectivityResult.wifi]);
@@ -78,7 +81,7 @@ void main() {
       // Wait for the potential refresh to happen
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      expect(numberOfFetchDataCalls, 1);
+      expect(numberOfFetchDataCalls, equals(1));
     });
 
     test(
@@ -95,7 +98,7 @@ void main() {
           connectivityStreamProvider.overrideWith((ref) => connectivityStream),
         ],
       )..listen(myProvider, (_, __) {});
-      expect(numberOfFetchDataCalls, 1);
+      expect(numberOfFetchDataCalls, equals(1));
 
       // Simulate network being online
       connectivityController.add([ConnectivityResult.none]);
@@ -103,7 +106,7 @@ void main() {
       // Wait for the potential refresh to happen
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      expect(numberOfFetchDataCalls, 1);
+      expect(numberOfFetchDataCalls, equals(1));
     });
 
     test(
@@ -120,7 +123,7 @@ void main() {
           connectivityStreamProvider.overrideWith((ref) => connectivityStream),
         ],
       )..listen(myProvider, (_, __) {});
-      expect(numberOfFetchDataCalls, 1);
+      expect(numberOfFetchDataCalls, equals(1));
 
       // Simulate network being online
       connectivityController.add([ConnectivityResult.wifi]);
@@ -128,7 +131,7 @@ void main() {
       // Wait for the potential refresh to happen
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      expect(numberOfFetchDataCalls, 2);
+      expect(numberOfFetchDataCalls, equals(2));
     });
 
     test(
@@ -143,6 +146,7 @@ void main() {
         if (shouldThrow) {
           throw const FormatException('No network mock exception');
         }
+
         return data;
       });
 
@@ -153,14 +157,14 @@ void main() {
       )..listen(myProvider, (_, __) {
           shouldThrow = false;
         });
-      expect(numberOfFetchDataCalls, 1);
+      expect(numberOfFetchDataCalls, equals(1));
 
       // Simulate network being online
       connectivityController.add([ConnectivityResult.wifi]);
       // Wait for the potential refresh to happen
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      expect(numberOfFetchDataCalls, 2);
+      expect(numberOfFetchDataCalls, equals(2));
 
       connectivityController.add([ConnectivityResult.none]);
       // Wait for the potential refresh to happen
@@ -170,7 +174,7 @@ void main() {
       // Wait for the potential refresh to happen
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      expect(numberOfFetchDataCalls, 2);
+      expect(numberOfFetchDataCalls, equals(2));
     });
   });
 }

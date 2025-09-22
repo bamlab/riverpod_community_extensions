@@ -10,18 +10,19 @@ void main() {
     final myFutureProvider = FutureProvider.autoDispose<int>((ref) async {
       await ref.debounce(const Duration(milliseconds: 300));
       ref.read(executionCounterProvider.notifier).state += 1;
+
       return 42; // Some dummy result.
     });
 
     test('debounce delays the execution', () async {
       final container = ProviderContainer();
-      expect(container.read(executionCounterProvider), 0);
+      expect(container.read(executionCounterProvider), equals(0));
       container.listen(myFutureProvider, (_, __) {});
 
-      expect(container.read(executionCounterProvider), 0);
+      expect(container.read(executionCounterProvider), equals(0));
       // Wait for 400 milliseconds, longer than the debounce duration.
       await Future<void>.delayed(const Duration(milliseconds: 400));
-      expect(container.read(executionCounterProvider), 1);
+      expect(container.read(executionCounterProvider), equals(1));
     });
 
     test(
@@ -31,24 +32,25 @@ void main() {
       final executionValuesProvider = StateProvider((ref) => 0);
 
       // Define a FutureProvider that uses debounce.
-      final myFutureProvider = FutureProvider.autoDispose<int>((ref) async {
+      final localFutureProvider = FutureProvider.autoDispose<int>((ref) async {
         await ref.debounce(const Duration(milliseconds: 300));
         ref.read(executionValuesProvider.notifier).state +=
             ref.read(lastTriggeredValueProvider);
+
         return 42; // Some dummy result.
       });
 
       final container = ProviderContainer();
-      expect(container.read(executionValuesProvider), 0);
-      container.listen(myFutureProvider, (_, __) {});
+      expect(container.read(executionValuesProvider), equals(0));
+      container.listen(localFutureProvider, (_, __) {});
       // relaunch before the debounce duration.
       await Future<void>.delayed(const Duration(milliseconds: 100));
       container.read(lastTriggeredValueProvider.notifier).state = 10;
-      container.listen(myFutureProvider, (_, __) {});
+      container.listen(localFutureProvider, (_, __) {});
 
       // Wait for 700 milliseconds, longer than the debounce duration.
       await Future<void>.delayed(const Duration(milliseconds: 700));
-      expect(container.read(executionValuesProvider), 10);
+      expect(container.read(executionValuesProvider), equals(10));
     });
 
     test('debounce handles dispose error', () async {

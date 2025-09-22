@@ -6,7 +6,7 @@ import 'package:riverpod_community_extensions/riverpod_community_extensions.dart
 part 'main.g.dart';
 
 @riverpod
-Future<int> cacheDataFor(CacheDataForRef ref) async {
+Future<int> cacheDataFor(Ref ref) async {
   ref.cacheDataFor(const Duration(seconds: 4));
   await Future.delayed(const Duration(seconds: 3));
 
@@ -53,6 +53,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               const Divider(indent: 20, endIndent: 20),
               Row(
+                spacing: 10,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ElevatedButton(
@@ -65,7 +66,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       });
                     },
                   ),
-                  const SizedBox(width: 10),
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: FutureBuilder(

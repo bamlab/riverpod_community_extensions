@@ -16,6 +16,7 @@ void main() {
         container = ProviderContainer();
         testStateProvider = StateProvider.autoDispose<int>((ref) {
           ref.cacheFor(cacheDuration);
+
           return defaultStateValue;
         });
       });
@@ -32,7 +33,7 @@ void main() {
         // wait for a duration inferior to cacheDuration
         await Future<void>.delayed(const Duration(milliseconds: 1));
 
-        expect(container.read(testStateProvider), newStateValue);
+        expect(container.read(testStateProvider), equals(newStateValue));
       });
 
       test('re-instanciate provider if no value is in cache', () async {
@@ -42,7 +43,7 @@ void main() {
         // Simulate an event loop
         await Future<void>.delayed(onDisposeComputingDuration);
 
-        expect(container.read(testStateProvider), defaultStateValue);
+        expect(container.read(testStateProvider), equals(defaultStateValue));
       });
     });
   });

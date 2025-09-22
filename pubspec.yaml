@@ -1,22 +1,59 @@
 name: riverpod_community_extensions
 description: Extends Riverpod ref types with additional helpers, to easily add common functionalities to your providers.
-version: 0.1.1
+version: 2.0.0
 homepage: https://github.com/bamlab/riverpod_community_extensions
 repository: https://github.com/bamlab/riverpod_community_extensions
 issue_tracker: https://github.com/bamlab/riverpod_community_extensions/issues
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.6.0 <4.0.0"
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  melos: ^6.1.0
+  melos: ^7.1.1
   mocktail: ^1.0.0
-  theodo_analysis: ^1.0.1
+  theodo_analysis: ^1.6.0
 
 dependencies:
-  connectivity_plus: ^6.0.3
+  connectivity_plus: ^7.0.0
   flutter:
     sdk: flutter
-  riverpod: ^2.0.0
+  riverpod: ">=2.6.1 <3.0.0"
+
+melos:
+  scripts:
+    analyze:
+      exec: |
+        dart analyze . && \
+        dart format --set-exit-if-changed lib test 
+      description: Run analyzer
+
+    test:
+      exec: flutter test --no-pub --test-randomize-ordering-seed random 
+      description: Run tests
+    
+    fix:
+      exec: |
+        dart fix . --apply && \
+        dart format lib test
+      description: Run fix
+    
+    test:cov:
+      exec: |
+        rm -rf coverage && \
+        flutter test --coverage --no-pub --test-randomize-ordering-seed random && \
+        genhtml coverage/lcov.info -o coverage && \
+        coverde value -i coverage/lcov.info
+      description: Run test with coverage
+    
+    test:cov:check:
+      exec: |
+        melos test:cov && \
+        coverde check 100 -i coverage/lcov.info
+      description: Check test coverage 
+    
+    open:cov:
+      exec: |
+        open coverage/index.html
+      description: Open test coverage
