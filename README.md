@@ -27,7 +27,7 @@ This package adds the following methods to ref types:
 
 - `autoRefresh` on `Ref` - Refreshes the value at a specified interval. Useful for scenarios where periodic updates of a provider's value are required.
 
-- `refreshWhenReturningToForeground` on `Ref` - Refreshes the provider's value each time the app returns to the foreground, ensuring the data is always up to date after returning to the app.
+- `refreshWhenReturningToForeground` on `AsyncNotifier` - Refreshes the AsyncNotifier's value each time the app returns to the foreground, ensuring the data is always up to date after returning to the app.
 
 - `refreshWhenNetworkAvailable` on `Ref` - Automatically refresh the provider when the network is available if it has error state. Uses the package [connectivity_plus](https://pub.dev/packages/connectivity_plus). Will only for inside FutureProvider.
 

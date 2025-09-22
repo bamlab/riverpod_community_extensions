@@ -1,6 +1,7 @@
 # 3.0.0
 
  - BREAKING: cacheDataFor cannot be use on FutureProvider. Instead use it on AsyncNotifier.
+ - BREAKING: refreshWhenNetworkAvailable cannot be use on FutureProvider. Instead use it on AsyncNotifier.
 
 # 2.0.0
 

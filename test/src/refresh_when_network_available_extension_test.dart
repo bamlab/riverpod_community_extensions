@@ -6,25 +6,43 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_community_extensions/src/connectivity_stream_provider.dart';
 import 'package:riverpod_community_extensions/src/refresh_when_network_available_extension.dart';
 
+class _MyProvider extends AsyncNotifier<int> {
+  @override
+  Future<int> build() async {
+    refreshWhenNetworkAvailable();
+
+    _numberOfFetchDataCalls++;
+
+    if (_isError) {
+      throw const FormatException('No network mock exception');
+    }
+
+    return 42;
+  }
+}
+
+var _numberOfFetchDataCalls = 0;
+var _isError = false;
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('RefreshWhenNetworkAvailableExtension Tests', () {
     late StreamController<List<ConnectivityResult>> connectivityController;
     late ProviderContainer container;
-    late AutoDisposeFutureProvider<int> myProvider;
     late Stream<List<ConnectivityResult>> connectivityStream;
 
-    var numberOfFetchDataCalls = 0;
-
-    Future<int> fetchData() {
-      numberOfFetchDataCalls++;
-
-      return Future.value(42);
+    AsyncNotifierProvider<_MyProvider, int> createMyProvider() {
+      return AsyncNotifierProvider<_MyProvider, int>(
+        _MyProvider.new,
+        isAutoDispose: true,
+        retry: (_, __) => null,
+      );
     }
 
     setUp(() {
-      numberOfFetchDataCalls = 0;
+      _numberOfFetchDataCalls = 0;
+      _isError = false;
       connectivityController = StreamController<List<ConnectivityResult>>();
       connectivityStream = connectivityController.stream;
     });
@@ -37,18 +55,12 @@ void main() {
     test(
         'Should not refresh when connectivity does not change to available '
         'and provider has data', () async {
-      myProvider = FutureProvider.autoDispose<int>((ref) async {
-        ref.refreshWhenNetworkAvailable();
-
-        return fetchData();
-      });
-
       container = ProviderContainer(
         overrides: [
           connectivityStreamProvider.overrideWith((ref) => connectivityStream),
         ],
-      )..listen(myProvider, (_, __) {});
-      expect(numberOfFetchDataCalls, equals(1));
+      )..listen(createMyProvider(), (_, __) {});
+      expect(_numberOfFetchDataCalls, equals(1));
 
       // Simulate network being offline
       connectivityController.add([ConnectivityResult.none]);
@@ -56,24 +68,18 @@ void main() {
       // Wait for the potential refresh to happen
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      expect(numberOfFetchDataCalls, equals(1));
+      expect(_numberOfFetchDataCalls, equals(1));
     });
 
     test(
         'Should not refresh when connectivity changes to available '
         'and provider has data', () async {
-      myProvider = FutureProvider.autoDispose<int>((ref) async {
-        ref.refreshWhenNetworkAvailable();
-
-        return fetchData();
-      });
-
       container = ProviderContainer(
         overrides: [
           connectivityStreamProvider.overrideWith((ref) => connectivityStream),
         ],
-      )..listen(myProvider, (_, __) {});
-      expect(numberOfFetchDataCalls, equals(1));
+      )..listen(createMyProvider(), (_, __) {});
+      expect(_numberOfFetchDataCalls, equals(1));
 
       // Simulate network being online
       connectivityController.add([ConnectivityResult.wifi]);
@@ -81,24 +87,19 @@ void main() {
       // Wait for the potential refresh to happen
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      expect(numberOfFetchDataCalls, equals(1));
+      expect(_numberOfFetchDataCalls, equals(1));
     });
 
     test(
         'Should not refresh when connectivity does not change to available '
         'and provider has error', () async {
-      myProvider = FutureProvider.autoDispose<int>((ref) async {
-        ref.refreshWhenNetworkAvailable();
-        await fetchData();
-        throw const FormatException('No network mock exception');
-      });
-
+      _isError = true;
       container = ProviderContainer(
         overrides: [
           connectivityStreamProvider.overrideWith((ref) => connectivityStream),
         ],
-      )..listen(myProvider, (_, __) {});
-      expect(numberOfFetchDataCalls, equals(1));
+      )..listen(createMyProvider(), (_, __) {});
+      expect(_numberOfFetchDataCalls, equals(1));
 
       // Simulate network being online
       connectivityController.add([ConnectivityResult.none]);
@@ -106,24 +107,19 @@ void main() {
       // Wait for the potential refresh to happen
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      expect(numberOfFetchDataCalls, equals(1));
+      expect(_numberOfFetchDataCalls, equals(1));
     });
 
     test(
         'Should refresh when connectivity changes to available '
         'and provider has error', () async {
-      myProvider = FutureProvider.autoDispose<int>((ref) async {
-        ref.refreshWhenNetworkAvailable();
-        await fetchData();
-        throw const FormatException('No network mock exception');
-      });
-
+      _isError = true;
       container = ProviderContainer(
         overrides: [
           connectivityStreamProvider.overrideWith((ref) => connectivityStream),
         ],
-      )..listen(myProvider, (_, __) {});
-      expect(numberOfFetchDataCalls, equals(1));
+      )..listen(createMyProvider(), (_, __) {});
+      expect(_numberOfFetchDataCalls, equals(1));
 
       // Simulate network being online
       connectivityController.add([ConnectivityResult.wifi]);
@@ -131,40 +127,29 @@ void main() {
       // Wait for the potential refresh to happen
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      expect(numberOfFetchDataCalls, equals(2));
+      expect(_numberOfFetchDataCalls, equals(2));
     });
 
     test(
         'Should refresh only once when connectivity changes '
         'if provider is in error and is then updated to data', () async {
-      var shouldThrow = true;
-
-      myProvider = FutureProvider.autoDispose<int>((ref) async {
-        ref.refreshWhenNetworkAvailable();
-        final data = await fetchData();
-
-        if (shouldThrow) {
-          throw const FormatException('No network mock exception');
-        }
-
-        return data;
-      });
+      _isError = true;
 
       container = ProviderContainer(
         overrides: [
           connectivityStreamProvider.overrideWith((ref) => connectivityStream),
         ],
-      )..listen(myProvider, (_, __) {
-          shouldThrow = false;
+      )..listen(createMyProvider(), (_, __) {
+          _isError = false;
         });
-      expect(numberOfFetchDataCalls, equals(1));
+      expect(_numberOfFetchDataCalls, equals(1));
 
       // Simulate network being online
       connectivityController.add([ConnectivityResult.wifi]);
       // Wait for the potential refresh to happen
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      expect(numberOfFetchDataCalls, equals(2));
+      expect(_numberOfFetchDataCalls, equals(2));
 
       connectivityController.add([ConnectivityResult.none]);
       // Wait for the potential refresh to happen
@@ -174,7 +159,7 @@ void main() {
       // Wait for the potential refresh to happen
       await Future<void>.delayed(const Duration(seconds: 1));
 
-      expect(numberOfFetchDataCalls, equals(2));
+      expect(_numberOfFetchDataCalls, equals(2));
     });
   });
 }
