@@ -1,13 +1,14 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:riverpod_community_extensions/riverpod_community_extensions.dart';
 
 part 'providers.g.dart';
 
 @riverpod
-Future<int> cacheDataFor(Ref ref) async {
-  ref.cacheDataFor(const Duration(seconds: 4));
-  await Future.delayed(const Duration(seconds: 3));
+class CacheDataFor extends _$CacheDataFor {
+  @override
+  FutureOr<int> build() {
+    cacheDataFor(const Duration(seconds: 4));
 
-  return 42;
+    return 42;
+  }
 }
