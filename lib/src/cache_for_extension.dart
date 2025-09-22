@@ -11,7 +11,7 @@ import 'package:riverpod/riverpod.dart';
 /// after they're no longer listened to.
 ///
 /// See [cacheFor]
-extension ProviderCache<T> on AutoDisposeRef<T> {
+extension ProviderCache<T> on Ref<T> {
   /// Keeps the surrounding provider alive for [duration].
   ///
   /// Example usages:
