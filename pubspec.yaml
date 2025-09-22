@@ -11,7 +11,7 @@ environment:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  melos: ^6.1.0
+  melos: ^7.1.1
   mocktail: ^1.0.0
   theodo_analysis: ^1.6.0
 
@@ -19,4 +19,4 @@ dependencies:
   connectivity_plus: ^6.0.3
   flutter:
     sdk: flutter
-  riverpod: ">=2.0.0 <3.0.0"
+  riverpod: ">=2.6.1 <3.0.0"
