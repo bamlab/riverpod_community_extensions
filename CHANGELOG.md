@@ -1,3 +1,7 @@
+# 3.0.0
+
+ - BREAKING: cacheDataFor cannot be use on FutureProvider. Instead use it on AsyncNotifier.
+
 # 2.0.0
 
 First stable release of riverpod_community_extension.

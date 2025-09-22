@@ -2,30 +2,40 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_community_extensions/riverpod_community_extensions.dart';
 
+class _CreateTestProvider extends AsyncNotifier<void> {
+  @override
+  Future<void> build() async {
+    cacheDataFor(_dataCacheDuration);
+
+    await Future<void>.delayed(_queryDuration);
+
+    if (!_isData) {
+      throw Exception();
+    }
+  }
+}
+
+late bool _isData;
+const _queryDuration = Duration(milliseconds: 10);
+const _dataCacheDuration = Duration(milliseconds: 20);
+
 void main() {
   group('cacheDataFor extension', () {
-    const queryDuration = Duration(milliseconds: 10);
-    const dataCacheDuration = Duration(milliseconds: 20);
     const onDisposeComputingDuration = Duration(milliseconds: 1);
 
-    late bool isData;
     late ProviderContainer container;
 
-    AutoDisposeFutureProvider<void> createTestProvider() {
-      return FutureProvider.autoDispose((ref) async {
-        ref.cacheDataFor(dataCacheDuration);
-
-        await Future<void>.delayed(queryDuration);
-
-        if (!isData) {
-          throw Exception();
-        }
-      });
+    AsyncNotifierProvider<_CreateTestProvider, void> createTestProvider() {
+      return AsyncNotifierProvider<_CreateTestProvider, void>(
+        _CreateTestProvider.new,
+        isAutoDispose: true,
+        retry: (_, __) => null,
+      );
     }
 
     setUp(() {
       container = ProviderContainer();
-      isData = true;
+      _isData = true;
     });
 
     tearDown(() async {
@@ -38,7 +48,7 @@ void main() {
       final testFutureProvider = createTestProvider();
       final asyncValues = <AsyncValue<void>>[];
 
-      isData = false;
+      _isData = false;
 
       final firstSubscription =
           container.listen(testFutureProvider, (previous, next) {
@@ -48,8 +58,7 @@ void main() {
         asyncValues.add(next);
       });
 
-      await Future<void>.delayed(queryDuration);
-
+      await Future<void>.delayed(_queryDuration * 2);
       firstSubscription.close();
 
       expect(asyncValues.length, equals(2));
@@ -59,7 +68,7 @@ void main() {
       // Wait longer to ensure the provider is fully disposed after error
       await Future<void>.delayed(const Duration(milliseconds: 30));
 
-      isData = true;
+      _isData = true;
 
       final secondSubscription =
           container.listen(testFutureProvider, (previous, next) {
@@ -69,7 +78,7 @@ void main() {
         asyncValues.add(next);
       });
 
-      await Future<void>.delayed(queryDuration);
+      await Future<void>.delayed(_queryDuration);
 
       secondSubscription.close();
 
@@ -92,7 +101,7 @@ void main() {
         asyncValues.add(next);
       });
 
-      await Future<void>.delayed(queryDuration);
+      await Future<void>.delayed(_queryDuration);
 
       firstSubscription.close();
 
@@ -110,7 +119,7 @@ void main() {
         asyncValues.add(next);
       });
 
-      await Future<void>.delayed(queryDuration);
+      await Future<void>.delayed(_queryDuration);
 
       secondSubscription.close();
 
@@ -130,7 +139,7 @@ void main() {
       expect(asyncValues.length, equals(1));
       expect(asyncValues[0], isA<AsyncLoading<void>>());
 
-      await Future<void>.delayed(queryDuration);
+      await Future<void>.delayed(_queryDuration);
       await Future<void>.delayed(onDisposeComputingDuration);
 
       asyncValues.add(container.read(testFutureProvider));
@@ -146,7 +155,7 @@ void main() {
       final testFutureProvider = createTestProvider();
       final asyncValues = <AsyncValue<void>>[];
 
-      isData = false;
+      _isData = false;
 
       asyncValues.add(container.read(testFutureProvider));
 
@@ -154,13 +163,13 @@ void main() {
       expect(asyncValues[0], isA<AsyncLoading<void>>());
 
       // Wait for the provider to complete and error out
-      await Future<void>.delayed(queryDuration);
+      await Future<void>.delayed(_queryDuration);
       await Future<void>.delayed(onDisposeComputingDuration);
       await Future<void>.delayed(const Duration(milliseconds: 1));
       await container.pump();
 
       // Reset isData to true to get fresh loading state
-      isData = true;
+      _isData = true;
 
       // Create a new provider instance to avoid cached error state
       final newTestFutureProvider = createTestProvider();
@@ -184,7 +193,7 @@ void main() {
         asyncValues.add(next);
       });
 
-      await Future<void>.delayed(queryDuration);
+      await Future<void>.delayed(_queryDuration);
 
       firstSubscription.close();
 
@@ -192,7 +201,7 @@ void main() {
       expect(asyncValues[0], isA<AsyncLoading<void>>());
       expect(asyncValues[1], isA<AsyncData<void>>());
 
-      await Future<void>.delayed(dataCacheDuration);
+      await Future<void>.delayed(_dataCacheDuration);
       await Future<void>.delayed(onDisposeComputingDuration);
 
       final secondSubscription =
@@ -203,7 +212,7 @@ void main() {
         asyncValues.add(next);
       });
 
-      await Future<void>.delayed(queryDuration);
+      await Future<void>.delayed(_queryDuration);
 
       secondSubscription.close();
 
