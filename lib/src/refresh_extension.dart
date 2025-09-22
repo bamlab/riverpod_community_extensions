@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:riverpod/riverpod.dart';
 
-/// Adds auto-refresh functionalities to `Ref<T>` objects.
+/// Adds auto-refresh functionalities to `Ref` objects.
 ///
 /// See [autoRefresh] and [refreshWhenReturningToForeground] for more details.
-extension RefreshExtension<T> on Ref<T> {
+extension RefreshExtension on Ref {
   /// Refreshes the value at the specified interval.
   ///
   /// Example usages:
