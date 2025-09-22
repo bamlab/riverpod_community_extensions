@@ -10,21 +10,26 @@
   <p>Ref types are the way to interact with providers in Riverpod. They are built to be composable and flexible. This package provides some useful extensions on ref types to make them even more powerful and easily add common functionalities on your providers, such as auto-refreshing for example.</p>
 </p>
 
+## Riverpod Versions 🔖
+
+Riverpod Community Extensions version 2 is only compatible with riverpod 2.
+If you want to use riverpod 3, migrate to riverpod_community_extension v3.
+
 ## Features 🚀
 
 This package adds the following methods to ref types:
 
-- `cacheFor` on `AutoDisposeRef` - Prevents the provider from being disposed for the specified duration.
+- `cacheFor` on `Ref` - Prevents the provider from being disposed for the specified duration.
 
-- `cacheDataFor` on `AutoDisposeFutureProviderRef` - Keeps the data of the future provider for the specified duration.
+- `cacheDataFor` on `Ref` - Keeps the data of the future provider for the specified duration. Will only work inside FutureProvider.
 
-- `debounce` on `AutoDisposeFutureProviderRef` - Wait for a specified duration before calling the provider's computation, and cancel the previous call if a new one is made.
+- `debounce` on `Ref` - Wait for a specified duration before calling the provider's computation, and cancel the previous call if a new one is made.
 
-- `autoRefresh` on `AutoDisposeRef` - Refreshes the value at a specified interval. Useful for scenarios where periodic updates of a provider's value are required.
+- `autoRefresh` on `Ref` - Refreshes the value at a specified interval. Useful for scenarios where periodic updates of a provider's value are required.
 
-- `refreshWhenReturningToForeground` on `AutoDisposeRef` - Refreshes the provider's value each time the app returns to the foreground, ensuring the data is always up to date after returning to the app.
+- `refreshWhenReturningToForeground` on `Ref` - Refreshes the provider's value each time the app returns to the foreground, ensuring the data is always up to date after returning to the app.
 
-- `refreshWhenNetworkAvailable` on `AutoDisposeFutureProviderRef` - Automatically refresh the provider when the network is available if it has error state. Uses the package [connectivity_plus](https://pub.dev/packages/connectivity_plus).
+- `refreshWhenNetworkAvailable` on `Ref` - Automatically refresh the provider when the network is available if it has error state. Uses the package [connectivity_plus](https://pub.dev/packages/connectivity_plus). Will only for inside FutureProvider.
 
 ## Installation 💻
 
@@ -62,7 +67,7 @@ import 'package:riverpod/riverpod.dart';
 part 'data_provider.g.dart';
 
 @riverpod
-Future<int> data((ref) async {
+Future<int> data((Ref ref) async {
   ref.cacheDataFor(const Duration(minutes: 5));
   return fetchData();
 });
@@ -82,18 +87,3 @@ We will always answer you with pleasure 😁
 ## Contributing 🤝
 
 If you want to contribute to this project, please read the [CONTRIBUTE.md](CONTRIBUTE.md) file.
-
-[dart_install_link]: https://dart.dev/get-dart
-[github_actions_link]: https://docs.github.com/en/actions/learn-github-actions
-[license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[license_link]: https://opensource.org/licenses/MIT
-[logo_black]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_black.png#gh-light-mode-only
-[logo_white]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_white.png#gh-dark-mode-only
-[mason_link]: https://github.com/felangel/mason
-[very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
-[very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
-[very_good_coverage_link]: https://github.com/marketplace/actions/very-good-coverage
-[very_good_ventures_link]: https://verygood.ventures
-[very_good_ventures_link_light]: https://verygood.ventures#gh-light-mode-only
-[very_good_ventures_link_dark]: https://verygood.ventures#gh-dark-mode-only
-[very_good_workflows_link]: https://github.com/VeryGoodOpenSource/very_good_workflows
