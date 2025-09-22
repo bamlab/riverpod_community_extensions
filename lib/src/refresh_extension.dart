@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:riverpod/riverpod.dart';
 
-/// Adds auto-refresh functionalities to Ref<T> objects.
+/// Adds auto-refresh functionalities to `Ref<T>` objects.
 ///
 /// See [autoRefresh] and [refreshWhenReturningToForeground] for more details.
 extension RefreshExtension<T> on Ref<T> {

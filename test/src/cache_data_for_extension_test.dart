@@ -52,7 +52,7 @@ void main() {
 
       firstSubscription.close();
 
-      expect(asyncValues.length, 2);
+      expect(asyncValues.length, equals(2));
       expect(asyncValues[0], isA<AsyncLoading<void>>());
       expect(asyncValues[1], isA<AsyncError<void>>());
 
@@ -73,7 +73,7 @@ void main() {
 
       secondSubscription.close();
 
-      expect(asyncValues.length, 4);
+      expect(asyncValues.length, equals(4));
       expect(asyncValues[0], isA<AsyncLoading<void>>());
       expect(asyncValues[1], isA<AsyncError<void>>());
       expect(asyncValues[2], isA<AsyncLoading<void>>());
@@ -96,7 +96,7 @@ void main() {
 
       firstSubscription.close();
 
-      expect(asyncValues.length, 2);
+      expect(asyncValues.length, equals(2));
       expect(asyncValues[0], isA<AsyncLoading<void>>());
       expect(asyncValues[1], isA<AsyncData<void>>());
 
@@ -114,7 +114,7 @@ void main() {
 
       secondSubscription.close();
 
-      expect(asyncValues.length, 2);
+      expect(asyncValues.length, equals(2));
       expect(asyncValues[0], isA<AsyncLoading<void>>());
       expect(asyncValues[1], isA<AsyncData<void>>());
     });
@@ -127,7 +127,7 @@ void main() {
         container.read(testFutureProvider),
       ];
 
-      expect(asyncValues.length, 1);
+      expect(asyncValues.length, equals(1));
       expect(asyncValues[0], isA<AsyncLoading<void>>());
 
       await Future<void>.delayed(queryDuration);
@@ -135,7 +135,7 @@ void main() {
 
       asyncValues.add(container.read(testFutureProvider));
 
-      expect(asyncValues.length, 2);
+      expect(asyncValues.length, equals(2));
       expect(asyncValues[0], isA<AsyncLoading<void>>());
       expect(asyncValues[1], isA<AsyncData<void>>());
     });
@@ -150,7 +150,7 @@ void main() {
 
       asyncValues.add(container.read(testFutureProvider));
 
-      expect(asyncValues.length, 1);
+      expect(asyncValues.length, equals(1));
       expect(asyncValues[0], isA<AsyncLoading<void>>());
 
       // Wait for the provider to complete and error out
@@ -167,7 +167,7 @@ void main() {
 
       asyncValues.add(container.read(newTestFutureProvider));
 
-      expect(asyncValues.length, 2);
+      expect(asyncValues.length, equals(2));
       expect(asyncValues[0], isA<AsyncLoading<void>>());
       expect(asyncValues[1], isA<AsyncLoading<void>>());
     });
@@ -188,7 +188,7 @@ void main() {
 
       firstSubscription.close();
 
-      expect(asyncValues.length, 2);
+      expect(asyncValues.length, equals(2));
       expect(asyncValues[0], isA<AsyncLoading<void>>());
       expect(asyncValues[1], isA<AsyncData<void>>());
 
@@ -207,7 +207,7 @@ void main() {
 
       secondSubscription.close();
 
-      expect(asyncValues.length, 4);
+      expect(asyncValues.length, equals(4));
       expect(asyncValues[0], isA<AsyncLoading<void>>());
       expect(asyncValues[1], isA<AsyncData<void>>());
       expect(asyncValues[2], isA<AsyncLoading<void>>());

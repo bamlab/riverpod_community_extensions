@@ -3,7 +3,7 @@ import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_community_extensions/src/connectivity_stream_provider.dart';
 
 /// Adds network-aware refresh functionality to
-/// Ref<T> objects.
+/// `Ref<T>` objects.
 /// This extension uses the connectivity_plus package to listen for network
 /// status changes and refreshes the provider when the network becomes
 /// available if it's in error state.

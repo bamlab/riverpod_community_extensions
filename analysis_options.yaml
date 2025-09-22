@@ -1,1 +1,14 @@
 include: package:theodo_analysis/analysis_options.yaml
+
+dart_code_metrics:
+  rules:
+    prefer-trailing-comma: false
+    avoid-long-functions:
+      exclude:
+        - test/**
+    avoid-unsafe-collection-methods:
+      exclude:
+        - test/**
+    no-empty-block:
+      exclude:
+        - test/**
