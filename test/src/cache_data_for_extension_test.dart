@@ -57,7 +57,7 @@ void main() {
       expect(asyncValues[1], isA<AsyncError<void>>());
 
       // Wait longer to ensure the provider is fully disposed after error
-      await Future<void>.delayed(const Duration(milliseconds: 10));
+      await Future<void>.delayed(const Duration(milliseconds: 30));
 
       isData = true;
 
