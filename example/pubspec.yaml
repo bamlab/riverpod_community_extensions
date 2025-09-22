@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: '>=3.4.3 <4.0.0'
+  sdk: '>=3.6.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -19,7 +19,7 @@ dev_dependencies:
     sdk: flutter
   riverpod_generator: ^2.6.5
   build_runner: ^2.4.11
-  theodo_analysis: ^1.0.1
+  theodo_analysis: ^1.6.0
 
 flutter:
   uses-material-design: true
